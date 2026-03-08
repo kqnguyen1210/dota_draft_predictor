@@ -1,3 +1,6 @@
+dota_matches.csv
+dota_rf_model.pkl
+
 venv/
 *.csv
 .ipynb_checkpoints
