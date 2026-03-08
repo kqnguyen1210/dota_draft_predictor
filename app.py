@@ -26,14 +26,13 @@ with col1:
         "Select 5 Heroes:",
         all_heroes,
         max_selections=5,
+        key="radiant_draft_box",
     )
 
 with col2:
     st.write("### Dire Team")
     dire_draft = st.multiselect(
-        "Select 5 Heroes:",
-        all_heroes,
-        max_selections=5,
+        "Select 5 Heroes:", all_heroes, max_selections=5, key="dire_draft_box"
     )
 
 # COUNTER-PICK INTERFACE
@@ -52,9 +51,37 @@ active_interactions = st.multiselect("Known Matchups:", available_interactions)
 if st.button("Predict Match Outcome"):
     if len(radiant_draft) == 5 and len(dire_draft) == 5:
         st.success("Draft locked in! Running the Oracle...")
+
+        model_columns = rf_model.feature_names_in_
+
+        draft_matrix = {feature: 0 for feature in model_columns}
+
         for hero in radiant_draft:
-            # We add a quick safety check to make sure the hero is actually in our dictionary
+            # We add a quick safety check to make sure the hero is actually
+            # in our dictionary
             if hero in draft_matrix:
-            draft_matrix[hero] = 1
+                draft_matrix[hero] = 1
+
+        for hero in dire_draft:
+            if hero in draft_matrix:
+                draft_matrix[hero] = -1
+
+        for interaction in available_interactions:
+            if interaction in draft_matrix:
+                draft_matrix[interaction] = -1
+
+        single_match_df = pd.DataFrame([draft_matrix])
+
+        win_probability = rf_model.predict_proba(single_match_df)[0][1]
+
+        st.divider()
+        st.subheader("Oracle Verdict")
+
+        if win_probability > 0.5:
+            st.write("### 🌟 The model favors **RADIANT** to win.")
+        else:
+            st.write("### 👹 The model favors **DIRE** to win.")
+
+        st.write(f"**Radiant Win Probability:** {win_probability * 100:.2f}%")
     else:
         st.error("Please select exactly 5 heroes for each team.")
