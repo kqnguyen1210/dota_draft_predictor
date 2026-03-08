@@ -1,4 +1,3 @@
 venv/
 *.csv
 .ipynb_checkpoints
-dota_rf_model.pkl
