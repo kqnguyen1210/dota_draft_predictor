@@ -74,14 +74,33 @@ if st.button("Predict Match Outcome"):
 
         win_probability = rf_model.predict_proba(single_match_df)[0][1]
 
+        radiant_prob = float(win_probability)
+        dire_prob = 1.0 - radiant_prob
+
         st.divider()
-        st.subheader("Oracle Verdict")
+        st.subheader("🔮 Oracle Verdict")
 
-        if win_probability > 0.5:
-            st.write("### 🌟 The model favors **RADIANT** to win.")
+        res_col1, res_col2 = st.columns(2)
+
+        with res_col1:
+            st.metric(
+                label="🌟 Radiant Win Probability",
+                value=f"{radiant_prob * 100:.1f}%",
+            )
+            st.progress(radiant_prob)
+
+        with res_col2:
+            st.metric(
+                label="👹 Dire Win Probability", value=f"{dire_prob * 100:.1f}%"
+            )
+            st.progress(dire_prob)
+
+        st.write("")
+
+        if radiant_prob > 0.5:
+            st.success("The Oracle heavily favors the Radiant draft.")
         else:
-            st.write("### 👹 The model favors **DIRE** to win.")
+            st.error("The Oracle heavily favors the Dire draft.")
 
-        st.write(f"**Radiant Win Probability:** {win_probability * 100:.2f}%")
     else:
         st.error("Please select exactly 5 heroes for each team.")
