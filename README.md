@@ -1,18 +1,20 @@
+Dota 2 Match Outcome Predictor ("Dota Oracle")
+
 Overview
 
 An end-to-end machine learning pipeline that harvests real-time match data from the OpenDota API to predict the outcome of professional-grade drafts. The project compares linear and non-linear models to identify which hero picks carry the most "weight" in the current meta.
 
-Technical Stack
+Tech Stack: Python, Scikit-Learn, Pandas, Streamlit, Git, Streamlit Community Cloud
 
-    Data Ingestion: Requests (REST API), JSON, Time (Rate-limiting).
+    Built and deployed a full-stack machine learning web application that predicts esports match outcomes based on team compositions and hero counter-picks.
 
-    Data Engineering: Pandas, NumPy, AST (Literal Evaluation).
+    Engineered features from a 10,000-match dataset, utilizing Pandas to transform raw drafting data into formatted matrices for model ingestion.
 
-    Machine Learning: Scikit-Learn (Random Forest, Logistic Regression).
+    Trained and evaluated a Random Forest classifier using Scikit-Learn, extracting the underlying predictive logic to calculate dynamic win probabilities.
 
-    Visualization: Matplotlib (Feature Importance).
+    Developed an interactive front-end user interface using Streamlit, allowing users to input live match drafts and toggle specific synergetic interactions.
 
-    DevOps: Pickle (Model Serialization)
+    Deployed the application to the live web via Streamlit Community Cloud, establishing a continuous deployment pipeline synced directly to a GitHub repository.
 
 Key Features
 
